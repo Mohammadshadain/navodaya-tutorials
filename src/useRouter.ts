@@ -102,7 +102,7 @@ export function updatePageSEO(page: ActivePage) {
   }
 
   // Set Title
-  document.title = title;
+  document.title = "Navodaya Tutorial";
 
   // Set Description
   let metaDesc = document.querySelector('meta[name="description"]');
