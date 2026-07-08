@@ -56,7 +56,7 @@ export function useRouter() {
 export function updatePageSEO(page: ActivePage) {
   let title = "Navodaya Tutorial - India's Trusted Home Tutor Platform";
   let description = "Get verified, highly experienced home tutors for Mathematics, Science, CBSE, ICSE, and competitive exams. Free trial class with the best tutors.";
-  const canonicalUrl = `https://navodayatutorial.com${page === 'home' ? '' : `/${page}`}`;
+  const canonicalUrl = `https://navodayatutorial.in${page === 'home' ? '' : `/${page}`}`;
 
   switch (page) {
     case 'home':
@@ -176,8 +176,8 @@ export function updatePageSEO(page: ActivePage) {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     "name": "Navodaya Tutorial",
-    "url": "https://navodayatutorial.com",
-    "logo": "https://navodayatutorial.com/logo.png",
+    "url": "https://navodayatutorial.in",
+    "logo": "https://navodayatutorial.in/logo.png",
     "description": "Premium, verified Home Tutor agency providing expert personalized tuition for CBSE, ICSE, and Board students.",
     "address": {
       "@type": "PostalAddress",
@@ -206,7 +206,7 @@ export function updatePageSEO(page: ActivePage) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://navodayatutorial.com"
+        "item": "https://navodayatutorial.in"
       },
       ...(page !== 'home' ? [{
         "@type": "ListItem",

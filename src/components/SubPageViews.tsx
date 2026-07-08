@@ -886,7 +886,7 @@ export function PrivacyPolicyView({ onNavigate }: { onNavigate: (page: ActivePag
         
         <p><strong>Effective Date:</strong> June 28, 2026</p>
         <p>
-          At Navodaya Tutorial (navodayatutorial.com), your privacy is of paramount importance to us. This Privacy Policy documents the types of personal data we collect, how we manage it, and the security protocols we deploy to keep your tutor requirements protected.
+          At Navodaya Tutorial (navodayatutorial.in), your privacy is of paramount importance to us. This Privacy Policy documents the types of personal data we collect, how we manage it, and the security protocols we deploy to keep your tutor requirements protected.
         </p>
 
         <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mt-4">1. Data We Collect</h3>
@@ -944,7 +944,7 @@ export function TermsAndConditionsView({ onNavigate }: { onNavigate: (page: Acti
         
         <p><strong>Effective Date:</strong> June 28, 2026</p>
         <p>
-          By accessing navodayatutorial.com and requesting a home tutor match, you agree to comply with the following formal Terms of Service.
+          By accessing navodayatutorial.in and requesting a home tutor match, you agree to comply with the following formal Terms of Service.
         </p>
 
         <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mt-4">1. Tutor Matching Services</h3>
