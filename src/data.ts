@@ -5,7 +5,7 @@ export const SUBJECTS: SubjectItem[] = [
     name: "Mathematics",
     icon: "Calculator",
     description: "From basic arithmetic to advanced calculus, algebra, and geometry. Customized formulas and problem-solving tricks.",
-    classes: ["Class 1-5", "Class 6-8", "Class 9-10", "Class 11-12", "JEE", "CUET"]
+    classes: ["Class 1-5", "Class 6-8", "Class 9-10", "Class 11-12", "JEE", "CUET", "NEET", "CA Foundation"]
   },
   {
     name: "Science",
@@ -64,8 +64,8 @@ export const SUBJECTS: SubjectItem[] = [
   {
     name: "Competitive Exams",
     icon: "Trophy",
-    description: "Targeted tutor mapping for high-stake exams: IIT-JEE Foundation, IIT-JEE Main, IIT-JEE Advanced, NEET, CUET, NDA, Olympiads, NTSE, and Scholarship Exams.",
-    classes: ["IIT-JEE", "NEET", "CUET", "NDA", "Olympiads", "NTSE", "Scholarships"]
+    description: "Targeted tutor mapping for high-stake exams: IIT-JEE Foundation, IIT-JEE Main, IIT-JEE Advanced, NEET, CUET, NDA, Olympiads, NTSE, Scholarship Exams, and B.Sc Nursing Entrance.",
+    classes: ["IIT-JEE", "NEET", "CUET", "NDA", "Olympiads", "NTSE", "Scholarships", "B.Sc Nursing Entrance"]
   },
   {
     name: "EVS",
@@ -89,19 +89,19 @@ export const SUBJECTS: SubjectItem[] = [
     name: "Accountancy",
     icon: "TrendingUp",
     description: "Journal entries, ledger, balance sheet, financial accounting, partnership, and company accounts with practical problem solving.",
-    classes: ["Class 11-12 (Commerce)"]
+    classes: ["Class 9-10", "Class 11-12", "Graduation", "BBA", "MBA", "CUET"]
   },
   {
     name: "Business Studies",
     icon: "Award",
     description: "Business management principles, marketing, finance, entrepreneurship, and board examination preparation.",
-    classes: ["Class 11-12 (Commerce)"]
+    classes: ["Class 9-10", "Class 11-12", "Graduation", "BBA", "MBA", "CUET"]
   },
   {
     name: "Economics",
     icon: "Cpu",
     description: "Microeconomics, Macroeconomics, Statistics, Indian Economy, and board examination preparation.",
-    classes: ["Class 11-12", "CUET"]
+    classes: ["Class 9-10", "Class 11-12", "Graduation", "BBA", "MBA", "CUET"]
   },
   {
     name: "History",

@@ -119,7 +119,14 @@ export function AboutView({ onRequestTutor, onNavigate }: SubPageViewProps) {
 // 2. SUBJECTS VIEW
 // ==========================================
 export function SubjectsView({ onRequestTutor, onNavigate }: SubPageViewProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() => {
+    const saved = sessionStorage.getItem('subject_search');
+    if (saved) {
+      sessionStorage.removeItem('subject_search');
+      return saved;
+    }
+    return '';
+  });
 
   const filteredSubjects = SUBJECTS.filter(sub =>
     sub.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -509,7 +516,14 @@ export function TestimonialsView({ onRequestTutor, onNavigate }: SubPageViewProp
 // ==========================================
 export function FaqView({ onRequestTutor, onNavigate }: SubPageViewProps) {
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [faqSearch, setFaqSearch] = useState('');
+  const [faqSearch, setFaqSearch] = useState(() => {
+    const saved = sessionStorage.getItem('faq_search');
+    if (saved) {
+      sessionStorage.removeItem('faq_search');
+      return saved;
+    }
+    return '';
+  });
 
   const filteredFaqs = FAQS.filter(faq =>
     faq.question.toLowerCase().includes(faqSearch.toLowerCase()) ||

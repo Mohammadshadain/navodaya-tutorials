@@ -146,7 +146,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
             
             {/* Card 1 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full">
+            <div 
+              onClick={() => onNavigate('about')}
+              className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300 flex-shrink-0">
                 <Compass className="w-6 h-6" />
               </div>
@@ -159,7 +162,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Card 2 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full">
+            <div 
+              onClick={() => onNavigate('classes')}
+              className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300 flex-shrink-0">
                 <Users className="w-6 h-6" />
               </div>
@@ -172,7 +178,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Card 3 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full">
+            <div 
+              onClick={() => onNavigate('subjects')}
+              className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300 flex-shrink-0">
                 <Award className="w-6 h-6" />
               </div>
@@ -185,7 +194,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Card 4 */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full">
+            <div 
+              onClick={() => onNavigate('how-it-works')}
+              className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300 flex-shrink-0">
                 <ShieldCheck className="w-6 h-6" />
               </div>
@@ -198,7 +210,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Card 5 - New Premium Card */}
-            <div className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full md:col-span-2 xl:col-span-1">
+            <div 
+              onClick={() => onNavigate('about')}
+              className="p-5 sm:p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-teal-500/20 transition-all duration-300 group flex flex-col h-full md:col-span-2 xl:col-span-1 cursor-pointer"
+            >
               <div className="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300 flex-shrink-0">
                 <ClipboardCheck className="w-6 h-6" />
               </div>
@@ -256,7 +271,7 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
 
             {/* Stat Card 5 */}
             <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-sm sm:text-base font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-tight">CBSE • ICSE • UP Board</span>
+              <span className="block text-xs sm:text-sm md:text-base font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-tight">CBSE • UP Board • ISC • ICSE • IB • NIOS</span>
               <span className="block text-xs font-bold text-slate-800 pt-1">Boards Covered</span>
               <span className="block text-[10px] text-slate-400">All Major Curriculums</span>
             </div>
@@ -288,7 +303,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Service 1 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col h-full justify-between">
+            <div 
+              onClick={() => onNavigate('classes')}
+              className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-500/20 transition flex flex-col h-full justify-between cursor-pointer"
+            >
               <div>
                 <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-5 flex-shrink-0">
                   <GraduationCap className="w-5 h-5 text-teal-500" />
@@ -304,7 +322,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Service 2 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col h-full justify-between">
+            <div 
+              onClick={() => onNavigate('subjects')}
+              className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-500/20 transition flex flex-col h-full justify-between cursor-pointer"
+            >
               <div>
                 <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-5 flex-shrink-0">
                   <BookOpen className="w-5 h-5 text-teal-500" />
@@ -320,7 +341,13 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Service 3 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col h-full justify-between">
+            <div 
+              onClick={() => {
+                sessionStorage.setItem('subject_search', 'Competitive Exams');
+                onNavigate('subjects');
+              }}
+              className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-500/20 transition flex flex-col h-full justify-between cursor-pointer"
+            >
               <div>
                 <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-5 flex-shrink-0">
                   <Award className="w-5 h-5 text-teal-500" />
@@ -336,7 +363,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Service 4 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition flex flex-col h-full justify-between">
+            <div 
+              onClick={() => onNavigate('contact')}
+              className="bg-white p-7 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-500/20 transition flex flex-col h-full justify-between cursor-pointer"
+            >
               <div>
                 <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-5 flex-shrink-0">
                   <Cpu className="w-5 h-5 text-teal-500" />
@@ -369,7 +399,13 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Category 1 */}
-            <div className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between">
+            <div 
+              onClick={() => {
+                sessionStorage.setItem('faq_search', 'male');
+                onNavigate('faq');
+              }}
+              className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between cursor-pointer"
+            >
               <h3 className="text-lg font-bold text-slate-800 mb-2 font-display">Male Tutors</h3>
               <p className="text-xs text-slate-500 leading-relaxed mt-auto">
                 Highly disciplined, experienced male mentors focusing on senior high school classes, boards prep, and advanced problem-solving.
@@ -377,7 +413,13 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Category 2 */}
-            <div className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between">
+            <div 
+              onClick={() => {
+                sessionStorage.setItem('faq_search', 'female');
+                onNavigate('faq');
+              }}
+              className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between cursor-pointer"
+            >
               <h3 className="text-lg font-bold text-slate-800 mb-2 font-display">Female Tutors</h3>
               <p className="text-xs text-slate-500 leading-relaxed mt-auto">
                 Nurturing, patient female instructors specializing in primary levels, junior school conceptual foundations, and girls' boarding layouts.
@@ -385,7 +427,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Category 3 */}
-            <div className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between">
+            <div 
+              onClick={() => onNavigate('about')}
+              className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between cursor-pointer"
+            >
               <h3 className="text-lg font-bold text-slate-800 mb-2 font-display">Expert Faculty</h3>
               <p className="text-xs text-slate-500 leading-relaxed mt-auto">
                 Verified school teachers, professors, and professional coaching lecturers possessing rich, long-term dedicated teaching experience.
@@ -393,7 +438,10 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             </div>
 
             {/* Category 4 */}
-            <div className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between">
+            <div 
+              onClick={() => onNavigate('subjects')}
+              className="bg-slate-50 p-7 rounded-2xl border border-slate-100 hover:bg-white hover:border-teal-500/20 hover:shadow-lg transition duration-300 flex flex-col h-full justify-between cursor-pointer"
+            >
               <h3 className="text-lg font-bold text-slate-800 mb-2 font-display">Specialized Tutors</h3>
               <p className="text-xs text-slate-500 leading-relaxed mt-auto">
                 Domain experts for specialized requirements: high-stake entrances, Olympiad training, coding/computer science, or commercial balance sheets.
@@ -431,7 +479,11 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             {SUBJECTS.slice(0, 4).map((sub, index) => (
               <div 
                 key={index} 
-                className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-teal-500/20 transition group flex flex-col h-full justify-between"
+                onClick={() => {
+                  sessionStorage.setItem('subject_search', sub.name);
+                  onNavigate('subjects');
+                }}
+                className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-teal-500/20 transition group flex flex-col h-full justify-between cursor-pointer"
               >
                 <div>
                   <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-4 group-hover:scale-105 transition flex-shrink-0">
@@ -489,7 +541,8 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
             {CLASSES_COVERED.slice(0, 3).map((cls, index) => (
               <div 
                 key={index} 
-                className="bg-white p-7 rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-lg transition flex flex-col h-full justify-between"
+                onClick={() => onNavigate('classes')}
+                className="bg-white p-7 rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-lg transition flex flex-col h-full justify-between cursor-pointer"
               >
                 <div>
                   <div className="flex items-center gap-2 mb-4">
