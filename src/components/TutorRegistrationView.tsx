@@ -187,7 +187,9 @@ export default function TutorRegistrationView({ onNavigate }: TutorRegistrationV
     setToast(null);
 
     // Retrieve API Endpoint
-    const SCRIPT_URL = import.meta.env.VITE_TUTOR_GOOGLE_SCRIPT_URL || import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
+    const SCRIPT_URL =
+  import.meta.env.VITE_TUTOR_SCRIPT_URL ||
+  "";
 
     try {
       const payload = {
