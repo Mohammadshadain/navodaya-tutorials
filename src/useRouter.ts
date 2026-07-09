@@ -7,12 +7,14 @@ export const ROUTES: RouteConfig[] = [
   { path: '/about', name: 'About Us', id: 'about' },
   { path: '/subjects', name: 'Subjects', id: 'subjects' },
   { path: '/classes', name: 'Classes', id: 'classes' },
+  { path: '/gallery', name: 'Gallery', id: 'gallery' },
   { path: '/how-it-works', name: 'How It Works', id: 'how-it-works' },
   { path: '/testimonials', name: 'Testimonials', id: 'testimonials' },
   { path: '/faq', name: 'FAQ', id: 'faq' },
   { path: '/contact', name: 'Contact Us', id: 'contact' },
   { path: '/privacy-policy', name: 'Privacy Policy', id: 'privacy-policy' },
-  { path: '/terms-and-conditions', name: 'Terms & Conditions', id: 'terms-and-conditions' }
+  { path: '/terms-and-conditions', name: 'Terms & Conditions', id: 'terms-and-conditions' },
+  { path: '/tutor-registration', name: 'Tutor Registration', id: 'tutor-registration' }
 ];
 
 export function useRouter() {
@@ -75,9 +77,13 @@ export function updatePageSEO(page: ActivePage) {
       title = "Classes Covered - Nursery to Class 12 & Competitive Exams";
       description = "We offer professional home tuitions for CBSE, ICSE, UP Board, and competitive exams like JEE, NEET, and CUET.";
       break;
+    case 'gallery':
+      title = "Gallery - Navodaya Tutorial | Academic & Tutor Activities";
+      description = "Browse through photos of our classroom learning, one-to-one home tuition sessions, student achievements, and academic excellence awards at Navodaya Tutorial.";
+      break;
     case 'how-it-works':
-      title = "How It Works - Simple 4-Step Home Tutor Booking Process";
-      description = "Discover how easy it is to find the perfect tutor: 1. Request, 2. Expert matching call, 3. Free trial class, and 4. Start personalized tutoring.";
+      title = "How It Works - Simple 5-Step Home Tutor Booking Process";
+      description = "Discover how easy it is to find the perfect tutor: 1. Request, 2. Expert matching call, 3. Free trial class, 4. Confirm & Advance, and 5. Start regular classes.";
       break;
     case 'testimonials':
       title = "Success Stories & Parent Testimonials - Navodaya Tutorial";
@@ -98,6 +104,10 @@ export function updatePageSEO(page: ActivePage) {
     case 'terms-and-conditions':
       title = "Terms & Conditions - Navodaya Tutorial";
       description = "Review the guidelines, rules, and terms of service for parents, students, and matched tutors at Navodaya Tutorial.";
+      break;
+    case 'tutor-registration':
+      title = "Tutor Registration - Join Navodaya Tutorial's Premier Network";
+      description = "Apply as a home or online tutor in Lucknow. Register your personal details, teaching qualifications, and preferences to join our elite tutor list.";
       break;
   }
 
@@ -187,7 +197,7 @@ export function updatePageSEO(page: ActivePage) {
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-73174-44730",
+      "telephone": ["+91-73174-44730", "+91-78913-26223"],
       "contactType": "customer service"
     }
   };

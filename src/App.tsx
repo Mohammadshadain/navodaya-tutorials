@@ -6,10 +6,11 @@ import Footer from './components/Footer';
 import RequestTutorModal from './components/RequestTutorModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import HomeView from './components/HomeView';
+import TutorRegistrationView from './components/TutorRegistrationView';
 import { 
   AboutView, SubjectsView, ClassesView, HowItWorksView, 
   TestimonialsView, FaqView, ContactView, PrivacyPolicyView, 
-  TermsAndConditionsView 
+  TermsAndConditionsView, GalleryView 
 } from './components/SubPageViews';
 import { useRouter, updatePageSEO } from './useRouter';
 
@@ -57,10 +58,14 @@ export default function App() {
         return <FaqView onRequestTutor={handleRequestTutor} onNavigate={navigate} />;
       case 'contact':
         return <ContactView onRequestTutor={handleRequestTutor} onNavigate={navigate} />;
+      case 'gallery':
+        return <GalleryView onRequestTutor={handleRequestTutor} onNavigate={navigate} />;
       case 'privacy-policy':
         return <PrivacyPolicyView onNavigate={navigate} />;
       case 'terms-and-conditions':
         return <TermsAndConditionsView onNavigate={navigate} />;
+      case 'tutor-registration':
+        return <TutorRegistrationView onNavigate={navigate} />;
       default:
         return <HomeView onRequestTutor={handleRequestTutor} onNavigate={navigate} />;
     }

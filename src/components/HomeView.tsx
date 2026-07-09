@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Check, Phone, ArrowRight, Star, MapPin, ChevronRight, ChevronLeft,
@@ -10,6 +10,183 @@ import { SUBJECTS, CLASSES_COVERED, TESTIMONIALS } from '../data';
 import EducationIllustration from './EducationIllustration';
 import { ActivePage } from '../types';
 
+// Helper Animated Counter Component
+interface AnimatedCounterProps {
+  target: number;
+  startTrigger: boolean;
+  duration?: number;
+  suffix?: string;
+}
+
+function AnimatedCounter({ target, startTrigger, duration = 2000, suffix = "" }: AnimatedCounterProps) {
+  const [count, setCount] = useState(0);
+  const animatedRef = useRef(false);
+
+  useEffect(() => {
+    if (!startTrigger || animatedRef.current) return;
+    animatedRef.current = true;
+
+    const startTime = performance.now();
+
+    const updateCount = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // easeOut cubic formulation: f(t) = 1 - (1 - t)^3
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      
+      const currentCount = Math.floor(easeProgress * target);
+      setCount(currentCount);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCount);
+      } else {
+        setCount(target);
+      }
+    };
+
+    requestAnimationFrame(updateCount);
+  }, [startTrigger, target, duration]);
+
+  return <>{count}{suffix}</>;
+}
+
+const statsStyles = `
+@keyframes swing-odd {
+  0% {
+    transform: translate3d(0, -120px, 0) rotate(-10deg) scale(0.92);
+    opacity: 0;
+  }
+  20% {
+    transform: translate3d(0, 0, 0) rotate(10deg) scale(0.94);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(0, 0, 0) rotate(-8deg) scale(0.96);
+  }
+  60% {
+    transform: translate3d(0, 0, 0) rotate(6deg) scale(0.98);
+  }
+  80% {
+    transform: translate3d(0, 0, 0) rotate(-4deg) scale(0.99);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) rotate(2deg) scale(1);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes swing-even {
+  0% {
+    transform: translate3d(0, -120px, 0) rotate(10deg) scale(0.92);
+    opacity: 0;
+  }
+  20% {
+    transform: translate3d(0, 0, 0) rotate(-10deg) scale(0.94);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(0, 0, 0) rotate(8deg) scale(0.96);
+  }
+  60% {
+    transform: translate3d(0, 0, 0) rotate(-6deg) scale(0.98);
+  }
+  80% {
+    transform: translate3d(0, 0, 0) rotate(4deg) scale(0.99);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) rotate(-2deg) scale(1);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up-number {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 15px, 0) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes slide-up-text {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 15px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hanging-card {
+  opacity: 0;
+  transform: translate3d(0, -120px, 0) rotate(0deg) scale(0.92);
+  transform-origin: 50% -100px;
+  will-change: transform, opacity;
+}
+
+.hanging-card.animate-swing-odd {
+  animation: swing-odd 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.hanging-card.animate-swing-even {
+  animation: swing-even 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.hanging-card.swing-finished {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  transition: transform 250ms cubic-bezier(0.25, 1, 0.5, 1), box-shadow 250ms cubic-bezier(0.25, 1, 0.5, 1), border-color 250ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (min-width: 768px) {
+  .hanging-card.swing-finished:hover {
+    transform: translateY(-10px) scale(1.03) !important;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1), 0 0 15px 3px rgba(20, 184, 166, 0.15) !important;
+    border-color: rgba(20, 184, 166, 0.3) !important;
+  }
+  
+  .hanging-card.swing-finished:hover .counter-glow {
+    text-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
+    transition: text-shadow 250ms ease;
+  }
+}
+
+.card-text-animate {
+  opacity: 0;
+  transform: translate3d(0, 15px, 0);
+  will-change: transform, opacity;
+}
+
+.card-number-animate {
+  opacity: 0;
+  transform: translate3d(0, 15px, 0) scale(0.85);
+  will-change: transform, opacity;
+}
+
+.hanging-card.swing-finished .card-number-animate {
+  animation: slide-up-number 500ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.hanging-card.swing-finished .card-heading-animate {
+  animation: slide-up-text 500ms cubic-bezier(0.25, 1, 0.5, 1) 100ms forwards;
+}
+
+.hanging-card.swing-finished .card-desc-animate {
+  animation: slide-up-text 500ms cubic-bezier(0.25, 1, 0.5, 1) 180ms forwards;
+}
+`;
+
 interface HomeViewProps {
   onRequestTutor: () => void;
   onNavigate: (page: ActivePage) => void;
@@ -18,6 +195,62 @@ interface HomeViewProps {
 export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) {
   const [selectedGrade, setSelectedGrade] = useState<'primary' | 'middle' | 'high' | 'higher'>('high');
   const [selectedGoal, setSelectedGoal] = useState<'exams' | 'concepts' | 'homework'>('exams');
+
+  // "Navodaya Tutorial in Numbers" animation state & observer
+  const statsSectionRef = useRef<HTMLDivElement>(null);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [animatedIndex, setAnimatedIndex] = useState<boolean[]>([false, false, false, false, false, false]);
+  const [counterTriggerIndex, setCounterTriggerIndex] = useState<boolean[]>([false, false, false, false, false, false]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStatsVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.22, // 20-25% enters the viewport
+      }
+    );
+
+    const currentRef = statsSectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!statsVisible) return;
+
+    const delays = [0, 120, 240, 360, 480, 600];
+    const swingDuration = 1500;
+
+    delays.forEach((delay, idx) => {
+      // Trigger swing start
+      setTimeout(() => {
+        setAnimatedIndex(prev => {
+          const next = [...prev];
+          next[idx] = true;
+          return next;
+        });
+      }, delay);
+
+      // Trigger counter start (after swing finishes)
+      setTimeout(() => {
+        setCounterTriggerIndex(prev => {
+          const next = [...prev];
+          next[idx] = true;
+          return next;
+        });
+      }, delay + swingDuration);
+    });
+  }, [statsVisible]);
 
   // Auto flipping sequence state for 3 small boxes
   const [autoFlipped, setAutoFlipped] = useState<boolean[]>([false, false, false]);
@@ -228,7 +461,8 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
           </div>
 
           {/* Navodaya Tutorial in Numbers Sub-section */}
-          <div className="text-center max-w-3xl mx-auto mt-16 mb-8 space-y-3">
+          <div ref={statsSectionRef} className="text-center max-w-3xl mx-auto mt-16 mb-8 space-y-3">
+            <style dangerouslySetInnerHTML={{ __html: statsStyles }} />
             <span className="text-xs font-bold text-teal-600 tracking-wider uppercase bg-teal-50 px-3 py-1 rounded-full inline-block">Lucknow's Trusted Choice</span>
             <h2 className="text-2xl sm:text-3xl font-bold font-display text-slate-800 tracking-tight">
               Navodaya Tutorial in Numbers
@@ -239,49 +473,61 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
           </div>
 
           {/* Compact Statistics Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6 overflow-visible">
             
-            {/* Stat Card 1 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-2xl sm:text-3xl font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-none">500+</span>
-              <span className="block text-xs font-bold text-slate-800 pt-1">Students Guided</span>
-              <span className="block text-[10px] text-slate-400">Academic success stories</span>
-            </div>
+            {[
+              { id: 1, targetValue: 500, suffix: "+", title: "Students Guided", desc: "Academic success stories", animateCounter: true },
+              { id: 2, targetValue: 150, suffix: "+", title: "Verified Tutors", desc: "Experienced & Qualified", animateCounter: true },
+              { id: 3, targetValue: 14, suffix: "+", title: "Years Experience", desc: "Teaching Since 2012", animateCounter: true },
+              { id: 4, targetValue: 100, suffix: "%", title: "Verified Tutors", desc: "Background Checked", animateCounter: true },
+              { id: 5, staticText: "CBSE • UP Board • ISC • ICSE • IB • NIOS", title: "Boards Covered", desc: "All Major Curriculums", animateCounter: false },
+              { id: 6, staticText: "Home & Online", title: "Flexible Learning", desc: "Available Across Lucknow", animateCounter: false }
+            ].map((card, idx) => {
+              const isOdd = idx % 2 === 0;
+              const swingClass = isOdd ? 'animate-swing-odd' : 'animate-swing-even';
+              const isAnimated = animatedIndex[idx];
+              const isFinished = counterTriggerIndex[idx];
+              
+              return (
+                <div
+                  key={card.id}
+                  className={`p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md text-center flex flex-col justify-center min-h-[120px] hanging-card ${
+                    isAnimated ? swingClass : ''
+                  } ${isFinished ? 'swing-finished' : ''}`}
+                >
+                  {/* Number Block */}
+                  <div className="card-number-animate leading-none">
+                    <span className="block text-2xl sm:text-3xl font-extrabold font-display text-teal-600 transition-transform duration-300 counter-glow">
+                      {card.animateCounter ? (
+                        <AnimatedCounter
+                          target={card.targetValue}
+                          startTrigger={isFinished}
+                          suffix={card.suffix}
+                        />
+                      ) : (
+                        <span className="text-xs sm:text-sm md:text-base leading-tight block">
+                          {card.staticText}
+                        </span>
+                      )}
+                    </span>
+                  </div>
 
-            {/* Stat Card 2 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-2xl sm:text-3xl font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-none">150+</span>
-              <span className="block text-xs font-bold text-slate-800 pt-1">Verified Tutors</span>
-              <span className="block text-[10px] text-slate-400">Experienced & Qualified</span>
-            </div>
+                  {/* Heading Block */}
+                  <div className="card-heading-animate">
+                    <span className="block text-xs font-bold text-slate-800 pt-1">
+                      {card.title}
+                    </span>
+                  </div>
 
-            {/* Stat Card 3 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-2xl sm:text-3xl font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-none">14+</span>
-              <span className="block text-xs font-bold text-slate-800 pt-1">Years Experience</span>
-              <span className="block text-[10px] text-slate-400">Teaching Since 2012</span>
-            </div>
-
-            {/* Stat Card 4 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-2xl sm:text-3xl font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-none">100%</span>
-              <span className="block text-xs font-bold text-slate-800 pt-1">Verified Tutors</span>
-              <span className="block text-[10px] text-slate-400">Background Checked</span>
-            </div>
-
-            {/* Stat Card 5 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-xs sm:text-sm md:text-base font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-tight">CBSE • UP Board • ISC • ICSE • IB • NIOS</span>
-              <span className="block text-xs font-bold text-slate-800 pt-1">Boards Covered</span>
-              <span className="block text-[10px] text-slate-400">All Major Curriculums</span>
-            </div>
-
-            {/* Stat Card 6 */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-teal-500/20 transition-all duration-300 text-center space-y-1 group hover:scale-[1.02] flex flex-col justify-center min-h-[120px]">
-              <span className="block text-sm sm:text-base font-extrabold font-display text-teal-600 group-hover:scale-105 transition-transform duration-300 leading-tight">Home & Online</span>
-              <span className="block text-xs font-bold text-slate-800 pt-1">Flexible Learning</span>
-              <span className="block text-[10px] text-slate-400">Available Across Lucknow</span>
-            </div>
+                  {/* Description Block */}
+                  <div className="card-desc-animate">
+                    <span className="block text-[10px] text-slate-400">
+                      {card.desc}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
 
           </div>
 
@@ -494,17 +740,30 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
                     {sub.description}
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-1 pt-2 border-t border-slate-50">
-                  {sub.classes.slice(0, 3).map((cl, i) => (
-                    <span key={i} className="text-[10px] bg-slate-50 text-slate-500 px-2 py-0.5 rounded font-medium border border-slate-100">
-                      {cl}
-                    </span>
-                  ))}
-                  {sub.classes.length > 3 && (
-                    <span className="text-[10px] text-teal-600 font-bold px-1.5 py-0.5">
-                      +{sub.classes.length - 3} more
-                    </span>
-                  )}
+                <div>
+                  <div className="flex flex-wrap gap-1 pt-2 border-t border-slate-50 mb-4">
+                    {sub.classes.slice(0, 3).map((cl, i) => (
+                      <span key={i} className="text-[10px] bg-slate-50 text-slate-500 px-2 py-0.5 rounded font-medium border border-slate-100">
+                        {cl}
+                      </span>
+                    ))}
+                    {sub.classes.length > 3 && (
+                      <span className="text-[10px] text-teal-600 font-bold px-1.5 py-0.5">
+                        +{sub.classes.length - 3} more
+                      </span>
+                    )}
+                  </div>
+                  {/* WhatsApp CTA */}
+                  <a
+                    href={`https://wa.me/918858807008?text=Hello%2C%0AI%20would%20like%20to%20book%20a%20demo%20class%20for%20${encodeURIComponent(sub.name)}.%0APlease%20share%20the%20tutor%20details.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full py-2 bg-teal-500/10 hover:bg-teal-500 text-teal-700 hover:text-white rounded-xl text-[11px] font-bold transition-all duration-200 flex flex-col items-center justify-center text-center gap-0.5 border border-teal-500/20 group/btn"
+                  >
+                    <span className="text-slate-500 group-hover/btn:text-teal-100 transition-colors text-[9px] font-medium leading-none">Want to book a demo class for {sub.name}?</span>
+                    <span className="flex items-center gap-1 font-extrabold text-[11px]">Book Now <span className="text-sm font-normal">→</span></span>
+                  </a>
                 </div>
               </div>
             ))}
@@ -608,15 +867,15 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <span className="text-xs font-bold text-teal-600 tracking-wider uppercase">Smooth Operations</span>
             <h2 className="text-3xl sm:text-4xl font-bold font-display text-slate-800 tracking-tight">
-              Our 4-Step Matching Protocol
+              Our 5-Step Matching Protocol
             </h2>
             <p className="text-slate-500 text-sm">
-              We have streamlined the path to matching your child with their perfect home tutor down to a fast, reliable, 4-step workflow.
+              We have streamlined the path to matching your child with their perfect home tutor down to a fast, reliable, 5-step workflow.
             </p>
           </div>
 
           {/* Visual Step Timeline */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative">
             
             {/* Step 1 */}
             <div className="relative text-center space-y-4">
@@ -662,6 +921,24 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
               </p>
             </div>
 
+            {/* Step 5 */}
+            <div className="relative text-center space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500 text-white font-display font-extrabold text-xl flex items-center justify-center mx-auto shadow-md shadow-emerald-500/10 z-10 relative">
+                5
+              </div>
+              <h3 className="text-base font-bold text-slate-800 font-display">Start Regular Classes</h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+                Your assigned tutor begins the regular academic syllabus classes at your home under coordinator monitoring.
+              </p>
+            </div>
+
+          </div>
+
+          {/* Centered Footer note */}
+          <div className="text-center mt-12">
+            <p className="text-sm font-extrabold font-display text-teal-600 tracking-wide uppercase italic">
+              All the Best for Your Kids' Career.
+            </p>
           </div>
 
         </div>
@@ -860,9 +1137,8 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
                   </div>
                 </div>
 
-                <a 
-                  href="tel:+917317444730"
-                  className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-500/20 transition group w-full cursor-pointer text-left block"
+                <div 
+                  className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm flex gap-4 hover:shadow-md hover:border-teal-500/20 transition group text-left w-full"
                 >
                   <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0 group-hover:bg-teal-600 group-hover:text-white transition">
                     <Phone className="w-5 h-5 text-teal-500 group-hover:text-white transition" />
@@ -871,12 +1147,17 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
                     <h4 className="text-xs font-extrabold text-slate-800">
                       Phone Helplines
                     </h4>
-                    <p className="text-xs text-slate-500 mt-1 font-semibold group-hover:text-teal-600 transition">
-                      +91 73174 44730
-                    </p>
-                    <p className="text-[10px] text-slate-400 mt-0.5">Available 9:00 AM - 8:00 PM (Monday - Sunday)</p>
+                    <div className="flex flex-col gap-1.5 mt-1.5">
+                      <a href="tel:+917317444730" className="text-xs text-slate-600 hover:text-teal-600 font-bold transition block">
+                        +91 73174 44730
+                      </a>
+                      <a href="tel:+917891326223" className="text-xs text-slate-600 hover:text-teal-600 font-bold transition block">
+                        +91 78913 26223
+                      </a>
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1.5">Available 9:00 AM - 8:00 PM (Monday - Sunday)</p>
                   </div>
-                </a>
+                </div>
 
                 <a 
                   href="mailto:navodayatutorialsindia@gmail.com"
@@ -899,41 +1180,41 @@ export default function HomeView({ onRequestTutor, onNavigate }: HomeViewProps) 
               {/* Follow Us Block */}
               <div className="pt-6 border-t border-slate-200/60 mt-6 text-left">
                 <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Follow Us</h4>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <a
                     href="https://wa.me/918858807008"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-emerald-100/30"
+                    className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-emerald-100/30"
                   >
-                    <MessageSquare className="w-4 h-4" />
+                    <MessageSquare className="w-4.5 h-4.5 flex-shrink-0" />
                     <span>WhatsApp</span>
                   </a>
                   <a
                     href="https://www.instagram.com/navodayatutorial?igsh=MXIwMWg0ODFxZXBvNQ=="
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3.5 py-2 bg-pink-50 text-pink-700 hover:bg-pink-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-pink-100/30"
+                    className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-pink-50 text-pink-700 hover:bg-pink-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-pink-100/30"
                   >
-                    <Instagram className="w-4 h-4" />
+                    <Instagram className="w-4.5 h-4.5 flex-shrink-0" />
                     <span>Instagram</span>
                   </a>
                   <a
                     href="https://www.facebook.com/share/1DG4FhvotR/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-blue-100/30"
+                    className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-blue-100/30"
                   >
-                    <Facebook className="w-4 h-4" />
+                    <Facebook className="w-4.5 h-4.5 flex-shrink-0" />
                     <span>Facebook</span>
                   </a>
                   <a
                     href="https://www.youtube.com/@Nt-online"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-700 hover:bg-red-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-red-100/30"
+                    className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-red-50 text-red-700 hover:bg-red-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-red-100/30"
                   >
-                    <Youtube className="w-4 h-4" />
+                    <Youtube className="w-4.5 h-4.5 flex-shrink-0" />
                     <span>YouTube</span>
                   </a>
                 </div>

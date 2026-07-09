@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Home } from 'lucide-react';
+import { Phone, Sparkles } from 'lucide-react';
 import { ActivePage } from '../types';
 
 interface MobileBottomNavProps {
@@ -11,7 +11,7 @@ export default function MobileBottomNav({ onNavigate, onRequestTutor }: MobileBo
   return (
     <div
       id="mobile-bottom-navigation"
-      className="block sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2.5rem)] max-w-[340px] bg-white border border-slate-100 shadow-[0_16px_40px_rgba(15,23,42,0.15)] px-5 py-2.5 rounded-[30px] transition-all duration-300"
+      className="block sm:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2.5rem)] max-w-[340px] bg-white border border-slate-100 shadow-[0_16px_40px_rgba(15,23,42,0.15)] px-4 py-2.5 rounded-[30px] transition-all duration-300"
     >
       <div className="grid grid-cols-3 items-end justify-between">
         
@@ -29,24 +29,24 @@ export default function MobileBottomNav({ onNavigate, onRequestTutor }: MobileBo
           </span>
         </a>
 
-        {/* Center Column: HOME (Large raised circular button) */}
+        {/* Center Column: Book Demo Class (Large raised circular button) */}
         <div className="flex flex-col items-center relative z-10">
           {/* Raised Circle Button */}
           <button
-            onClick={() => onNavigate('home')}
+            onClick={onRequestTutor}
             className="w-[66px] h-[66px] rounded-full bg-teal-600 border-4 border-white shadow-[0_8px_20px_rgba(13,148,136,0.35)] flex items-center justify-center -mt-9 hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
-            aria-label="Navigate to Home"
+            aria-label="Book Demo Class"
           >
-            <Home className="w-7 h-7 text-white stroke-[2.25]" />
+            <Sparkles className="w-7 h-7 text-white stroke-[2.25] animate-pulse" />
           </button>
           
           {/* Capsule Pill Button below */}
           <button
-            onClick={() => onNavigate('home')}
-            className="bg-white border border-teal-100 rounded-full px-4 py-1 shadow-[0_2px_6px_rgba(13,148,136,0.1)] mt-1.5 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+            onClick={onRequestTutor}
+            className="bg-white border border-teal-100 rounded-full px-2.5 py-1 shadow-[0_2px_6px_rgba(13,148,136,0.1)] mt-1.5 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
           >
-            <span className="text-[10px] font-black tracking-[0.15em] text-teal-600">
-              HOME
+            <span className="text-[8.5px] font-black tracking-[0.02em] text-teal-600 whitespace-nowrap">
+              Book Demo
             </span>
           </button>
         </div>

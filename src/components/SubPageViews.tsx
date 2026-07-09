@@ -3,7 +3,8 @@ import {
   Compass, ShieldCheck, Users, Target, BookOpen, GraduationCap, MapPin, 
   Phone, Mail, Clock, Search, Star, HelpCircle, ChevronRight, Check, ArrowRight,
   Shield, BookOpenText, Sparkles, Building, UserCheck,
-  Facebook, Instagram, Youtube, MessageSquare
+  Facebook, Instagram, Youtube, MessageSquare,
+  FlaskConical, Trophy, Presentation, ClipboardCheck, Lightbulb, X
 } from 'lucide-react';
 import { SUBJECTS, CLASSES_COVERED, SERVICE_AREAS, TESTIMONIALS, FAQS } from '../data';
 import { ActivePage } from '../types';
@@ -186,17 +187,29 @@ export function SubjectsView({ onRequestTutor, onNavigate }: SubPageViewProps) {
                 </p>
               </div>
 
-              <div className="border-t border-slate-50 pt-4 mt-auto">
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-2">
-                  Classes Supported
-                </span>
-                <div className="flex flex-wrap gap-1">
-                  {sub.classes.map((cls, i) => (
-                    <span key={i} className="text-[10px] text-slate-600 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded font-medium">
-                      {cls}
-                    </span>
-                  ))}
+              <div className="border-t border-slate-50 pt-4 mt-auto space-y-4">
+                <div>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-2">
+                    Classes Supported
+                  </span>
+                  <div className="flex flex-wrap gap-1">
+                    {sub.classes.map((cls, i) => (
+                      <span key={i} className="text-[10px] text-slate-600 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded font-medium">
+                        {cls}
+                      </span>
+                    ))}
+                  </div>
                 </div>
+                {/* WhatsApp CTA */}
+                <a
+                  href={`https://wa.me/918858807008?text=Hello%2C%0AI%20would%20like%20to%20book%20a%20demo%20class%20for%20${encodeURIComponent(sub.name)}.%0APlease%20share%20the%20tutor%20details.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2 bg-teal-500/10 hover:bg-teal-500 text-teal-700 hover:text-white rounded-xl text-[11px] font-bold transition-all duration-200 flex flex-col items-center justify-center text-center gap-0.5 border border-teal-500/20 group/btn"
+                >
+                  <span className="text-slate-500 group-hover/btn:text-teal-100 transition-colors text-[9px] font-medium leading-none">Want to book a demo class for {sub.name}?</span>
+                  <span className="flex items-center gap-1 font-extrabold text-[11px]">Book Now <span className="text-sm font-normal">→</span></span>
+                </a>
               </div>
             </div>
           ))}
@@ -250,7 +263,7 @@ export function ClassesView({ onRequestTutor, onNavigate }: SubPageViewProps) {
             Academic Syllabi and Board Curricula Covered
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed">
-            From kindergarten play-based reading habits up to higher undergraduate specializations and intensive competitive board tests (CBSE, ICSE, UP Board).
+            From kindergarten play-based reading habits up to higher undergraduate specializations and intensive competitive board tests (CBSE, UP Board, ISC, ICSE, NIOS, IB).
           </p>
         </div>
 
@@ -346,6 +359,9 @@ export function HowItWorksView({ onRequestTutor, onNavigate }: SubPageViewProps)
         </div>
 
         {/* Timeline Layout */}
+        <div className="text-center max-w-3xl mx-auto space-y-3 pb-6">
+          <h2 className="text-2xl font-bold font-display text-slate-800">Our 5-Step Matching Protocol</h2>
+        </div>
         <div className="space-y-8 relative before:absolute before:inset-y-0 before:left-4 sm:before:left-1/2 before:w-0.5 before:bg-slate-200">
           
           {/* Step 1 */}
@@ -412,6 +428,29 @@ export function HowItWorksView({ onRequestTutor, onNavigate }: SubPageViewProps)
             </div>
           </div>
 
+          {/* Step 5 */}
+          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0">
+            <div className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right">
+              <span className="text-xs font-bold text-teal-600 block">Step 05</span>
+              <h3 className="text-base font-bold text-slate-800 font-display">Start Regular Classes</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Your assigned tutor begins the regular academic syllabus classes at your home under coordinator monitoring.
+              </p>
+            </div>
+            {/* Center Node */}
+            <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs">
+              5
+            </div>
+            <div className="hidden sm:block w-[45%]" />
+          </div>
+
+        </div>
+
+        {/* Centered Footer note */}
+        <div className="text-center py-4">
+          <p className="text-sm font-extrabold font-display text-teal-600 tracking-wide uppercase italic">
+            All the Best for Your Kids' Career.
+          </p>
         </div>
 
         {/* Trust seal */}
@@ -548,7 +587,7 @@ export function FaqView({ onRequestTutor, onNavigate }: SubPageViewProps) {
             Frequently Asked Questions
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed max-w-2xl mx-auto">
-            Find answers covering tuition fees calculation, tutor qualifications, backup trial policies, and CBSE/ICSE board tracking.
+            Find answers covering tuition fees calculation, tutor qualifications, backup trial policies, and CBSE, UP Board, ISC, ICSE, NIOS, IB board tracking.
           </p>
 
           {/* Search */}
@@ -609,11 +648,18 @@ export function FaqView({ onRequestTutor, onNavigate }: SubPageViewProps) {
           <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Still have questions?</h4>
           <p className="text-xs text-slate-500">Contact our senior academic consultant directly via telephone hotline.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-            <a href="tel:+917317444730" className="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs transition">
-              Call: +91 73174 44730
-            </a>
-            <a href="https://wa.me/918858807008" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-xs transition">
-              WhatsApp Coordinator
+            <div className="flex flex-col gap-1 px-5 py-2.5 bg-slate-800 text-white font-bold rounded-xl text-xs transition min-w-[180px] text-center justify-center">
+              <span className="text-[9px] text-slate-400 font-medium">Call Us Directly</span>
+              <a href="tel:+917317444730" className="hover:text-teal-400 transition leading-none py-0.5">
+                +91 73174 44730
+              </a>
+              <a href="tel:+917891326223" className="hover:text-teal-400 transition leading-none py-0.5">
+                +91 78913 26223
+              </a>
+            </div>
+            <a href="https://wa.me/918858807008" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-xs transition flex flex-col items-center justify-center min-w-[180px]">
+              <span className="text-[9px] text-emerald-100 font-medium leading-none mb-0.5">Instant Chat</span>
+              <span className="leading-none">WhatsApp Coordinator</span>
             </a>
           </div>
         </div>
@@ -680,19 +726,23 @@ export function ContactView({ onRequestTutor, onNavigate }: SubPageViewProps) {
                 </div>
               </div>
 
-              <a 
-                href="tel:+917317444730"
-                className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm flex gap-4 hover:shadow-md hover:border-teal-500/20 transition group text-left block w-full cursor-pointer"
+              <div 
+                className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm flex gap-4 text-left w-full"
               >
-                <Phone className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0 group-hover:text-teal-600 transition" />
+                <Phone className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider group-hover:text-teal-600 transition">Tutor Booking Hotline</h4>
-                  <p className="text-xs font-bold text-slate-800 mt-1 group-hover:text-teal-600 transition">
-                    +91 73174 44730
-                  </p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">Active 9:00 AM - 8:00 PM Daily</p>
+                  <h4 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Tutor Booking Hotline</h4>
+                  <div className="flex flex-col gap-1.5 mt-1.5">
+                    <a href="tel:+917317444730" className="text-xs text-slate-600 hover:text-teal-600 font-bold transition block">
+                      +91 73174 44730
+                    </a>
+                    <a href="tel:+917891326223" className="text-xs text-slate-600 hover:text-teal-600 font-bold transition block">
+                      +91 78913 26223
+                    </a>
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1.5">Active 9:00 AM - 8:00 PM Daily</p>
                 </div>
-              </a>
+              </div>
 
               <a 
                 href="mailto:navodayatutorialsindia@gmail.com"
@@ -722,41 +772,41 @@ export function ContactView({ onRequestTutor, onNavigate }: SubPageViewProps) {
             {/* Follow Us Block */}
             <div className="pt-6 border-t border-slate-200/60 mt-6 text-left">
               <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Follow Us</h4>
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <a
                   href="https://wa.me/918858807008"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-emerald-100/30"
+                  className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-emerald-100/30"
                 >
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-4.5 h-4.5 flex-shrink-0" />
                   <span>WhatsApp</span>
                 </a>
                 <a
                   href="https://www.instagram.com/navodayatutorial?igsh=MXIwMWg0ODFxZXBvNQ=="
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-pink-50 text-pink-700 hover:bg-pink-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-pink-100/30"
+                  className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-pink-50 text-pink-700 hover:bg-pink-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-pink-100/30"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <Instagram className="w-4.5 h-4.5 flex-shrink-0" />
                   <span>Instagram</span>
                 </a>
                 <a
                   href="https://www.facebook.com/share/1DG4FhvotR/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-blue-100/30"
+                  className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-blue-50 text-blue-700 hover:bg-blue-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-blue-100/30"
                 >
-                  <Facebook className="w-4 h-4" />
+                  <Facebook className="w-4.5 h-4.5 flex-shrink-0" />
                   <span>Facebook</span>
                 </a>
                 <a
                   href="https://www.youtube.com/@Nt-online"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3.5 py-2 bg-red-50 text-red-700 hover:bg-red-500 hover:text-white rounded-xl text-xs font-semibold transition duration-200 cursor-pointer shadow-xs border border-red-100/30"
+                  className="flex items-center justify-center gap-2 w-full h-11 px-4 bg-red-50 text-red-700 hover:bg-red-500 hover:text-white rounded-xl text-xs font-bold transition duration-200 cursor-pointer shadow-xs border border-red-100/30"
                 >
-                  <Youtube className="w-4 h-4" />
+                  <Youtube className="w-4.5 h-4.5 flex-shrink-0" />
                   <span>YouTube</span>
                 </a>
               </div>
@@ -966,6 +1016,385 @@ export function TermsAndConditionsView({ onNavigate }: { onNavigate: (page: Acti
         <p>
           Parents must provide a safe, respectful, and quiet in-home study environment for the visiting tutor to deliver high-quality, focused instruction.
         </p>
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// 10. GALLERY VIEW
+// ==========================================
+export function GalleryView({ onRequestTutor, onNavigate }: SubPageViewProps) {
+  const [activeTab, setActiveTab] = useState<'all' | 'classroom' | 'hometuition' | 'cocurricular' | 'group' | 'celebration'>('all');
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; title: string; desc: string; tag: string } | null>(null);
+
+  const GALLERY_ITEMS = [
+    {
+      id: 1,
+      category: 'classroom',
+      title: 'Classroom Interactive Session',
+      desc: 'Our dynamic group classrooms in Lucknow focusing on logic-building and conceptual clarity.',
+      icon: 'BookOpen',
+      tag: 'Classroom Learning',
+      image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 2,
+      category: 'hometuition',
+      title: '1-to-1 Home Guidance',
+      desc: 'Individualized academic attention focusing on deep custom syllabus tracking and pacing.',
+      icon: 'UserCheck',
+      tag: 'One-to-One Home Tuition',
+      image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 3,
+      category: 'cocurricular',
+      title: 'Science Project Demonstration',
+      desc: 'Fostering practical curiosity and hands-on scientific projects beyond pure rote-learning.',
+      icon: 'FlaskConical',
+      tag: 'Co-curricular Activities',
+      image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 4,
+      category: 'group',
+      title: 'Collaborative Study Circles',
+      desc: 'Students collaborating on board exam mock series under senior coordinator invigilation.',
+      icon: 'Users',
+      tag: 'Group Study Sessions',
+      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 5,
+      category: 'celebration',
+      title: 'Annual Academic Merits',
+      desc: 'Recognizing student rank achievements and board toppers of CBSE, UP Board & ICSE.',
+      icon: 'Trophy',
+      tag: 'Testimonials & Celebrations',
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 6,
+      category: 'classroom',
+      title: 'Digital Tech Classroom',
+      desc: 'Integrating advanced projection and visualization modules for physical chemistry classes.',
+      icon: 'Presentation',
+      tag: 'Classroom Learning',
+      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 7,
+      category: 'hometuition',
+      title: 'Home Mock-Test Series',
+      desc: 'In-home progress tracking with strictly timed exam simulators under parent visibility.',
+      icon: 'ClipboardCheck',
+      tag: 'One-to-One Home Tuition',
+      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 8,
+      category: 'cocurricular',
+      title: 'Brainstorming Quiz Contests',
+      desc: 'Engaging brain puzzles and mental mathematics exercises to boost analytical reflexes.',
+      icon: 'Lightbulb',
+      tag: 'Co-curricular Activities',
+      image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 9,
+      category: 'celebration',
+      title: 'NEET Qualified Students',
+      desc: 'Our brilliant students secure top ranks in NEET medical entrance exams in Lucknow.',
+      icon: 'Trophy',
+      tag: 'Academic Achievements',
+      image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 10,
+      category: 'celebration',
+      title: 'IIT-JEE Selected Students',
+      desc: 'Rigorous engineering training results in outstanding selection rates for premier IIT campuses.',
+      icon: 'Trophy',
+      tag: 'Academic Achievements',
+      image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 11,
+      category: 'celebration',
+      title: 'JEE Advanced Achievers',
+      desc: 'Cracking the toughest engineering test with dedicated mentorship and customized study schedules.',
+      icon: 'Trophy',
+      tag: 'Academic Achievements',
+      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 12,
+      category: 'celebration',
+      title: 'CUET Success Stories',
+      desc: 'Securing admissions into top-tier central universities with comprehensive general test prep.',
+      icon: 'Trophy',
+      tag: 'Academic Achievements',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 13,
+      category: 'celebration',
+      title: 'NDA Selection',
+      desc: 'Guiding candidates to clear military entrance tests with robust academic discipline.',
+      icon: 'Trophy',
+      tag: 'Academic Achievements',
+      image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 14,
+      category: 'cocurricular',
+      title: 'Olympiad Winners',
+      desc: 'Students showcasing exceptional critical thinking in state and national mathematical Olympiads.',
+      icon: 'Lightbulb',
+      tag: 'Co-curricular Activities',
+      image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 15,
+      category: 'cocurricular',
+      title: 'NTSE Scholars',
+      desc: 'Nurturing talent early to win the prestigious National Talent Search Examination scholarships.',
+      icon: 'Lightbulb',
+      tag: 'Co-curricular Activities',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 16,
+      category: 'celebration',
+      title: 'Board Exam Toppers',
+      desc: 'Lucknow district ranks secured in CBSE, ISC, and UP Board high school curricula.',
+      icon: 'Trophy',
+      tag: 'Testimonials & Celebrations',
+      image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 17,
+      category: 'celebration',
+      title: '95%+ Scorers',
+      desc: 'Celebrating our high-schoolers who crossed the coveted 95% threshold in cumulative finals.',
+      icon: 'Trophy',
+      tag: 'Testimonials & Celebrations',
+      image: 'https://images.unsplash.com/photo-1516534775068-ba3e84589d90?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 18,
+      category: 'celebration',
+      title: 'Student Award Ceremony',
+      desc: 'Our annual merit ceremony honoring outstanding performance, dedication, and consistent progress.',
+      icon: 'Trophy',
+      tag: 'Testimonials & Celebrations',
+      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 19,
+      category: 'group',
+      title: 'Parent Appreciation Meet',
+      desc: 'Regular interaction sessions with local Lucknow families to align student guidance plans.',
+      icon: 'Users',
+      tag: 'Group Study Sessions',
+      image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 20,
+      category: 'celebration',
+      title: 'Annual Academic Celebration',
+      desc: 'Celebrating educational breakthroughs and milestones with parents, tutors, and alumni.',
+      icon: 'Trophy',
+      tag: 'Testimonials & Celebrations',
+      image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      id: 21,
+      category: 'hometuition',
+      title: 'Tutor Excellence Awards',
+      desc: 'Recognizing home tutors who went above and beyond to achieve monumental grade boosts.',
+      icon: 'UserCheck',
+      tag: 'One-to-One Home Tuition',
+      image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800'
+    }
+  ];
+
+  const filteredItems = activeTab === 'all' 
+    ? GALLERY_ITEMS 
+    : GALLERY_ITEMS.filter(item => item.category === activeTab);
+
+  return (
+    <div id="gallery-view" className="py-24 bg-slate-50 min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        {/* Breadcrumbs */}
+        <div className="text-xs text-slate-400 font-semibold flex items-center gap-2">
+          <button onClick={() => onNavigate('home')} className="hover:text-teal-600 transition">Home</button>
+          <span>/</span>
+          <span className="text-slate-600">Gallery</span>
+        </div>
+
+        {/* Header */}
+        <div className="max-w-3xl mx-auto text-center space-y-3">
+          <span className="text-xs font-bold text-teal-600 tracking-wider uppercase bg-teal-50 px-3 py-1 rounded-full">Academic Life</span>
+          <h1 className="text-4xl font-extrabold font-display text-slate-800 tracking-tight">
+            Our Learning Gallery
+          </h1>
+          <p className="text-slate-500 text-sm leading-relaxed">
+            Explore glimpses of classroom sessions, one-on-one personal home tutoring, group simulations, and merit celebrations across Lucknow.
+          </p>
+        </div>
+
+        {/* Tabs navigation */}
+        <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
+          {[
+            { id: 'all', label: 'All Glimpses' },
+            { id: 'classroom', label: 'Classroom' },
+            { id: 'hometuition', label: '1-to-1 Tuitions' },
+            { id: 'cocurricular', label: 'Co-Curricular' },
+            { id: 'group', label: 'Group Studies' },
+            { id: 'celebration', label: 'Celebrations' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer border ${
+                activeTab === tab.id
+                  ? 'bg-teal-600 border-teal-600 text-white shadow-md shadow-teal-600/10'
+                  : 'bg-white border-slate-100 text-slate-600 hover:border-slate-200'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredItems.map((item) => {
+            return (
+              <div
+                key={item.id}
+                onClick={() => setLightboxImage({ src: item.image, title: item.title, desc: item.desc, tag: item.tag })}
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md hover:border-teal-500/20 transition duration-300 flex flex-col justify-between cursor-pointer group"
+              >
+                {/* Visual Image Area */}
+                <div className="h-44 relative bg-slate-900 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/40 transition-colors duration-300" />
+                  
+                  {/* Subtle top-left icon overlay */}
+                  <div className="absolute top-4 left-4 w-9 h-9 rounded-xl bg-teal-500/90 backdrop-blur-xs flex items-center justify-center text-white shadow-md shadow-teal-500/20 z-10">
+                    {item.icon === 'BookOpen' && <BookOpen className="w-4 h-4" />}
+                    {item.icon === 'UserCheck' && <UserCheck className="w-4 h-4" />}
+                    {item.icon === 'FlaskConical' && <FlaskConical className="w-4 h-4" />}
+                    {item.icon === 'Users' && <Users className="w-4 h-4" />}
+                    {item.icon === 'Trophy' && <Trophy className="w-4 h-4" />}
+                    {item.icon === 'Presentation' && <Presentation className="w-4 h-4" />}
+                    {item.icon === 'ClipboardCheck' && <ClipboardCheck className="w-4 h-4" />}
+                    {item.icon === 'Lightbulb' && <Lightbulb className="w-4 h-4" />}
+                  </div>
+
+                  {/* Category tag */}
+                  <div className="absolute bottom-4 left-4 z-10">
+                    <span className="text-[9px] font-black tracking-widest text-teal-400 uppercase bg-slate-900/90 border border-teal-500/25 px-2.5 py-1 rounded-md leading-none">
+                      {item.tag}
+                    </span>
+                  </div>
+
+                  {/* Search/Zoom overlay on hover */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                    <div className="w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                      <Search className="w-5 h-5" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description Body */}
+                <div className="p-5 space-y-2 text-left">
+                  <h3 className="text-sm font-bold text-slate-800 font-display leading-tight group-hover:text-teal-600 transition-colors">{item.title}</h3>
+                  <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA Banner */}
+        <div className="p-8 bg-slate-900 rounded-3xl text-center space-y-4 text-white">
+          <h3 className="text-xl font-bold font-display">Witness the Academic Excellence Live</h3>
+          <p className="text-xs text-slate-400 max-w-lg mx-auto">Book a free demo lesson with Lucknow's premier tutoring network and boost your child's grades today.</p>
+          <button
+            onClick={onRequestTutor}
+            className="px-6 py-2.5 bg-teal-500 hover:bg-teal-600 text-white font-bold rounded-xl text-xs transition cursor-pointer"
+          >
+            Schedule Free Trial Class
+          </button>
+        </div>
+
+        {/* Lightbox Modal */}
+        {lightboxImage && (
+          <div 
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setLightboxImage(null)}
+          >
+            <div 
+              className="bg-white rounded-3xl overflow-hidden max-w-3xl w-full shadow-2xl relative border border-slate-100/10 flex flex-col md:flex-row"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setLightboxImage(null)}
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center transition z-10 cursor-pointer"
+                aria-label="Close lightbox"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Left Side: Large Image */}
+              <div className="md:w-3/5 h-64 md:h-96 relative bg-slate-950">
+                <img 
+                  src={lightboxImage.src} 
+                  alt={lightboxImage.title}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Right Side: Details */}
+              <div className="p-8 md:w-2/5 flex flex-col justify-center text-left space-y-4">
+                <span className="text-[9px] font-black tracking-widest text-teal-600 uppercase bg-teal-50 border border-teal-100 px-2.5 py-1 rounded-md w-fit leading-none">
+                  {lightboxImage.tag}
+                </span>
+                <h3 className="text-xl font-extrabold font-display text-slate-800 leading-snug">
+                  {lightboxImage.title}
+                </h3>
+                <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                  {lightboxImage.desc}
+                </p>
+                <button
+                  onClick={() => {
+                    setLightboxImage(null);
+                    onRequestTutor();
+                  }}
+                  className="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-xs transition cursor-pointer text-center"
+                >
+                  Request Tutor Details
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

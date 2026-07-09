@@ -7,12 +7,14 @@ export type ActivePage =
   | 'about'
   | 'subjects'
   | 'classes'
+  | 'gallery'
   | 'how-it-works'
   | 'testimonials'
   | 'faq'
   | 'contact'
   | 'privacy-policy'
-  | 'terms-and-conditions';
+  | 'terms-and-conditions'
+  | 'tutor-registration';
 
 export interface RouteConfig {
   path: string;

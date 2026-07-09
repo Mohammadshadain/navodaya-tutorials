@@ -26,11 +26,11 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
                 <GraduationCap className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-base font-extrabold font-display text-white tracking-tight">
-                  Navodaya <span className="text-teal-400">Tutorial</span>
+                <span className="text-base font-extrabold font-display text-white tracking-tight uppercase">
+                  NAVODAYA <span className="text-teal-400">TUTORIAL</span>
                 </span>
-                <p className="text-[9px] text-slate-400 font-semibold tracking-wider uppercase -mt-0.5">
-                  Quality Education at Your Doorstep
+                <p className="text-[9px] text-slate-400 font-semibold tracking-wider -mt-0.5">
+                  Quality Education At Your Doorstep
                 </p>
               </div>
             </div>
@@ -38,6 +38,16 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
             <p className="text-xs text-slate-400 leading-relaxed">
               India's trusted Home Tuition & Online Learning platform for Nursery to PG, All Boards, All Subjects & Competitive Exams.
             </p>
+
+            <div className="pt-1">
+              <button
+                onClick={() => onNavigate('tutor-registration')}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold transition hover:scale-105 active:scale-95 cursor-pointer shadow-md shadow-teal-500/20"
+              >
+                <span>Join as a Tutor</span>
+                <span className="text-[9px] bg-teal-600 text-teal-100 px-1 py-0.5 rounded font-extrabold uppercase">Apply</span>
+              </button>
+            </div>
             
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-1">
@@ -113,11 +123,19 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
                 <MapPin className="w-4 h-4 text-teal-400 flex-shrink-0" />
                 <span className="text-slate-400">Lucknow, Uttar Pradesh</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                <a href="tel:+917317444730" className="hover:text-teal-400 transition text-slate-400 hover:translate-x-0.5 inline-block">
-                  +91 73174 44730
-                </a>
+              <li className="flex flex-col gap-2 text-left">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-teal-400 flex-shrink-0" />
+                  <a href="tel:+917317444730" className="hover:text-teal-400 transition text-slate-400 hover:translate-x-0.5 inline-block">
+                    +91 73174 44730
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-teal-400 flex-shrink-0" />
+                  <a href="tel:+917891326223" className="hover:text-teal-400 transition text-slate-400 hover:translate-x-0.5 inline-block">
+                    +91 78913 26223
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-teal-400 flex-shrink-0" />
@@ -148,6 +166,13 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
           </div>
           
           <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-1.5 text-xs">
+            <button
+              onClick={() => onNavigate('tutor-registration')}
+              className="text-teal-400 hover:text-teal-300 font-bold transition cursor-pointer"
+            >
+              Tutor Registration
+            </button>
+            <span className="text-slate-700">|</span>
             <button
               onClick={() => onNavigate('privacy-policy')}
               className="text-slate-400 hover:text-white transition cursor-pointer"
@@ -204,11 +229,11 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
                 <GraduationCap className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-base font-extrabold font-display text-white tracking-tight">
-                  Navodaya <span className="text-teal-400">Tutorial</span>
+                <span className="text-base font-extrabold font-display text-white tracking-tight uppercase">
+                  NAVODAYA <span className="text-teal-400">TUTORIAL</span>
                 </span>
-                <p className="text-[9px] text-slate-400 font-semibold tracking-wider uppercase -mt-0.5">
-                  Quality Education at Your Doorstep
+                <p className="text-[9px] text-slate-400 font-semibold tracking-wider -mt-0.5">
+                  Quality Education At Your Doorstep
                 </p>
               </div>
             </div>
@@ -216,6 +241,16 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               India's trusted Home Tuition & Online Learning platform for Nursery to PG, All Boards, All Subjects & Competitive Exams.
             </p>
+
+            <div className="pt-1">
+              <button
+                onClick={() => onNavigate('tutor-registration')}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold transition hover:scale-105 active:scale-95 cursor-pointer shadow-md shadow-teal-500/20"
+              >
+                <span>Join as a Tutor</span>
+                <span className="text-[9px] bg-teal-600 text-teal-100 px-1 py-0.5 rounded font-extrabold uppercase">Apply</span>
+              </button>
+            </div>
             
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-1">
@@ -257,11 +292,19 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
                 <MapPin className="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" />
                 <span className="text-slate-400">Lucknow, Uttar Pradesh</span>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Phone className="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" />
-                <a href="tel:+917317444730" className="hover:text-teal-400 transition text-slate-400 hover:translate-x-0.5 inline-block">
-                  +91 73174 44730
-                </a>
+              <li className="flex flex-col gap-2 text-left">
+                <div className="flex items-center gap-2.5">
+                  <Phone className="w-4 h-4 text-teal-400 flex-shrink-0" />
+                  <a href="tel:+917317444730" className="hover:text-teal-400 transition text-slate-400 hover:translate-x-0.5 inline-block">
+                    +91 73174 44730
+                  </a>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Phone className="w-4 h-4 text-teal-400 flex-shrink-0" />
+                  <a href="tel:+917891326223" className="hover:text-teal-400 transition text-slate-400 hover:translate-x-0.5 inline-block">
+                    +91 78913 26223
+                  </a>
+                </div>
               </li>
               <li className="flex items-start gap-2.5">
                 <Mail className="w-4 h-4 text-teal-400 mt-0.5 flex-shrink-0" />
@@ -326,6 +369,13 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs">
             <button
+              onClick={() => onNavigate('tutor-registration')}
+              className="text-teal-400 hover:text-teal-300 font-bold transition cursor-pointer"
+            >
+              Tutor Registration
+            </button>
+            <span className="text-slate-700">|</span>
+            <button
               onClick={() => onNavigate('privacy-policy')}
               className="text-slate-400 hover:text-white transition cursor-pointer"
             >
@@ -350,11 +400,11 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
           <div className="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20">
             <GraduationCap className="w-4.5 h-4.5" />
           </div>
-          <span className="text-sm font-extrabold font-display text-white tracking-tight leading-none">
-            Navodaya <span className="text-teal-400">Tutorial</span>
+          <span className="text-sm font-extrabold font-display text-white tracking-tight leading-none uppercase">
+            NAVODAYA <span className="text-teal-400">TUTORIAL</span>
           </span>
-          <p className="text-[8px] text-slate-400 font-bold tracking-wider uppercase">
-            Quality Education at Your Doorstep
+          <p className="text-[8px] text-slate-400 font-bold tracking-wider">
+            Quality Education At Your Doorstep
           </p>
         </div>
 
@@ -363,17 +413,35 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
           India's Trusted Home Tuition & Online Learning Platform.
         </p>
 
+        <div className="pt-1">
+          <button
+            onClick={() => onNavigate('tutor-registration')}
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-500 hover:bg-teal-600 text-white text-[11px] font-bold transition cursor-pointer shadow-md shadow-teal-500/20"
+          >
+            <span>Become a Home/Online Tutor</span>
+            <span className="text-[8px] bg-teal-600 text-teal-100 px-1 py-0.5 rounded uppercase font-extrabold">Register</span>
+          </button>
+        </div>
+
         {/* 3. Contact Information */}
         <div className="flex flex-col items-center gap-2 text-xs text-slate-400 w-full mt-1">
           <div className="flex items-center gap-1.5 justify-center">
             <MapPin className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
             <span className="leading-none">Lucknow, Uttar Pradesh</span>
           </div>
-          <div className="flex items-center gap-1.5 justify-center">
-            <Phone className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
-            <a href="tel:+917317444730" className="leading-none hover:text-teal-400 transition">
-              +91 73174 44730
-            </a>
+          <div className="flex flex-col gap-2 items-center w-full">
+            <div className="flex items-center gap-1.5 justify-center">
+              <Phone className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
+              <a href="tel:+917317444730" className="leading-none hover:text-teal-400 transition">
+                +91 73174 44730
+              </a>
+            </div>
+            <div className="flex items-center gap-1.5 justify-center">
+              <Phone className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
+              <a href="tel:+917891326223" className="leading-none hover:text-teal-400 transition">
+                +91 78913 26223
+              </a>
+            </div>
           </div>
           <div className="flex items-center gap-1.5 justify-center">
             <Mail className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
@@ -412,6 +480,15 @@ export default function Footer({ onNavigate, onRequestTutor }: FooterProps) {
           >
             <Youtube className="w-4.5 h-4.5" />
           </a>
+        </div>
+
+        {/* 4.5 Navigation Links */}
+        <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 text-xs text-slate-400 py-1 font-semibold">
+          <button onClick={() => onNavigate('tutor-registration')} className="text-teal-400 hover:text-teal-300 transition cursor-pointer">Tutor Registration</button>
+          <span className="text-slate-800">|</span>
+          <button onClick={() => onNavigate('privacy-policy')} className="hover:text-white transition cursor-pointer">Privacy Policy</button>
+          <span className="text-slate-800">|</span>
+          <button onClick={() => onNavigate('terms-and-conditions')} className="hover:text-white transition cursor-pointer">Terms & Conditions</button>
         </div>
 
         {/* 5. Divider */}
