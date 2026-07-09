@@ -187,76 +187,85 @@ export default function TutorRegistrationView({ onNavigate }: TutorRegistrationV
     setToast(null);
 
     // Retrieve API Endpoint
-    const SCRIPT_URL =
+   const SCRIPT_URL =
   import.meta.env.VITE_TUTOR_SCRIPT_URL ||
+  import.meta.env.VITE_GOOGLE_SCRIPT_URL ||
   "";
 
     try {
-      const payload = {
-        formType: 'tutor_registration',
-        // 1. Personal Details
-        fullName: fullName.trim(),
-        dob: dob,
-        gender: gender,
-        mobileNumber: mobileNumber.trim(),
-        alternateMobileNumber: alternateMobileNumber.trim(),
-        email: email.trim(),
-        fatherName: fatherName.trim(),
-        parentMobileNumber: parentMobileNumber.trim(),
-        
-        // 2. Educational Qualification
-        board10th: board10th,
-        percentage10th: percentage10th,
-        board12th: board12th,
-        percentage12th: percentage12th,
-        graduationUniversity: graduationUniversity,
-        graduationPercentage: graduationPercentage,
-        postGraduation: postGraduation,
-        otherQualification: otherQualification,
-        
-        // 3. Teaching Details
-        teachingExperience: teachingExperience,
-        preferredMode: preferredMode,
-        classesCanTeach: classesCanTeach.join(', '),
-        subjectsCanTeach: subjectsCanTeach.join(', '),
-        preferredArea: preferredArea,
-        languagesKnown: languagesKnown,
-        
-        // 4. Address
-        currentAddress: currentAddress,
-        permanentAddress: permanentAddress,
-        
-        // 5. Professional Details
-        aadhaarNumber: aadhaarNumber,
-        panNumber: panNumber,
-        resumeLink: resumeLink,
-        certificateLink: certificateLink,
-        profilePhotoLink: profilePhotoLink,
-        expectedFees: expectedFees,
-        availableDays: availableDays,
-        availableTime: availableTime,
-        canTravel: canTravel,
-        ownVehicle: ownVehicle,
-        
-        // Timestamp & Submission Date
-        submittedAt: new Date().toISOString()
-      };
+     const payload = {
+  fullName: fullName.trim(),
+  dob,
+  gender,
+
+  mobile: mobileNumber,
+  alternateMobile: alternateMobileNumber,
+
+  email,
+  fatherName,
+
+  parentMobile: parentMobileNumber,
+
+  tenthBoard: board10th,
+  tenthPercentage: percentage10th,
+
+  twelfthBoard: board12th,
+  twelfthPercentage: percentage12th,
+
+  graduationUniversity,
+  graduationPercentage,
+
+  postGraduation,
+  otherQualification,
+
+  experience: teachingExperience,
+
+  preferredMode,
+
+  classes: classesCanTeach.join(", "),
+  subjects: subjectsCanTeach.join(", "),
+
+  preferredArea,
+  languages: languagesKnown,
+
+  currentAddress,
+  permanentAddress,
+
+  aadhaar: aadhaarNumber,
+  pan: panNumber,
+
+  resume: resumeLink,
+  certificate: certificateLink,
+  photo: profilePhotoLink,
+
+  expectedFees,
+  availableDays,
+  availableTime,
+
+  canTravel,
+  ownVehicle,
+
+  declaration: declarationConfirmed
+};
 
       if (!SCRIPT_URL) {
         console.warn("Google script URL is not configured. Simulating submission in demo environment.");
         await new Promise(resolve => setTimeout(resolve, 1500)); // simulate latency
       } else {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain',
-          },
-          body: JSON.stringify(payload)
-        });
+       const response = await fetch(SCRIPT_URL,{
+    method:"POST",
+    headers:{
+        "Content-Type":"text/plain"
+    },
+    body:JSON.stringify(payload)
+});
 
+const result = await response.text();
+
+console.log("Google Response:", result);
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    throw new Error(result);
+}
       }
 
       // Success Reset & Toast
