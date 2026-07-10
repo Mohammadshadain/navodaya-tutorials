@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import { 
   Compass, ShieldCheck, Users, Target, BookOpen, GraduationCap, MapPin, 
   Phone, Mail, Clock, Search, Star, HelpCircle, ChevronRight, Check, ArrowRight,
@@ -336,8 +337,192 @@ export function ClassesView({ onRequestTutor, onNavigate }: SubPageViewProps) {
 // 4. HOW IT WORKS VIEW
 // ==========================================
 export function HowItWorksView({ onRequestTutor, onNavigate }: SubPageViewProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [coords, setCoords] = useState<{ x: number; y: number }[]>([]);
+  const [screenType, setScreenType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+
+  const setNodeRef = (index: number) => (el: HTMLDivElement | null) => {
+    nodeRefs.current[index] = el;
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasBeenVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.02 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      let currentScreen: 'desktop' | 'tablet' | 'mobile' = 'desktop';
+      if (width < 640) {
+        currentScreen = 'mobile';
+      } else if (width < 1024) {
+        currentScreen = 'tablet';
+      }
+      setScreenType(currentScreen);
+
+      if (!containerRef.current) return;
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const newCoords = nodeRefs.current.map((node) => {
+        if (!node) return { x: 0, y: 0 };
+        const rect = node.getBoundingClientRect();
+        return {
+          x: rect.left - containerRect.left + rect.width / 2,
+          y: rect.top - containerRect.top + rect.height / 2,
+        };
+      });
+      setCoords(newCoords);
+    };
+
+    window.addEventListener('resize', handleResize);
+    const timer = setTimeout(handleResize, 150);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef.current && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        handleResize();
+      });
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
+
+  const pathD = useMemo(() => {
+    if (coords.length < 5 || coords.some(c => c.x === 0 && c.y === 0)) {
+      return '';
+    }
+
+    let d = `M ${coords[0].x} ${coords[0].y}`;
+    
+    for (let i = 0; i < coords.length - 1; i++) {
+      const pStart = coords[i];
+      const pEnd = coords[i + 1];
+      const h = pEnd.y - pStart.y;
+      
+      if (screenType === 'mobile') {
+        d += ` L ${pEnd.x} ${pEnd.y}`;
+      } else {
+        const dir = i % 2 === 0 ? -1 : 1;
+        const offset = screenType === 'desktop' ? 120 : 60;
+        
+        const c1x = pStart.x + dir * offset;
+        const c1y = pStart.y + h * 0.25;
+        const c2x = pEnd.x + dir * offset;
+        const c2y = pStart.y + h * 0.75;
+        
+        d += ` C ${c1x} ${c1y}, ${c2x} ${c2y}, ${pEnd.x} ${pEnd.y}`;
+      }
+    }
+    return d;
+  }, [coords, screenType]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
+
+  const pathLength = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const [dotPos, setDotPos] = useState({ x: 0, y: 0 });
+  const [activeSteps, setActiveSteps] = useState<boolean[]>([false, false, false, false, false]);
+  const pathRef = useRef<SVGPathElement>(null);
+
+  useEffect(() => {
+    const unsubscribe = pathLength.on("change", (latest) => {
+      if (pathRef.current) {
+        try {
+          const totalLength = pathRef.current.getTotalLength();
+          const point = pathRef.current.getPointAtLength(latest * totalLength);
+          if (point && !isNaN(point.x) && !isNaN(point.y)) {
+            setDotPos({ x: point.x, y: point.y });
+          }
+        } catch (e) {}
+      }
+
+      setActiveSteps((prev) => {
+        let changed = false;
+        const next = [...prev];
+        for (let i = 0; i < 5; i++) {
+          const threshold = i / 4;
+          const isReached = latest >= Math.max(0, threshold - 0.05);
+          if (isReached && !next[i]) {
+            next[i] = true;
+            changed = true;
+          }
+        }
+        return changed ? next : prev;
+      });
+    });
+
+    return () => unsubscribe();
+  }, [pathLength]);
+
+  useEffect(() => {
+    if (pathRef.current && pathD) {
+      try {
+        const totalLength = pathRef.current.getTotalLength();
+        const point = pathRef.current.getPointAtLength(pathLength.get() * totalLength);
+        if (point && !isNaN(point.x) && !isNaN(point.y)) {
+          setDotPos({ x: point.x, y: point.y });
+        }
+      } catch (e) {}
+    }
+  }, [pathD, pathLength]);
+
+  const isFinished = activeSteps[4];
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { 
+        duration: 0.45, 
+        ease: [0.16, 1, 0.3, 1],
+        staggerChildren: 0.08,
+        delayChildren: 0.05
+      } 
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.35, ease: 'easeOut' } 
+    }
+  };
+
   return (
-    <div id="how-it-works-view" className="py-24 bg-slate-50 min-h-screen">
+    <div id="how-it-works-view" className="py-24 bg-slate-50 min-h-screen overflow-x-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Breadcrumbs */}
@@ -362,85 +547,246 @@ export function HowItWorksView({ onRequestTutor, onNavigate }: SubPageViewProps)
         <div className="text-center max-w-3xl mx-auto space-y-3 pb-6">
           <h2 className="text-2xl font-bold font-display text-slate-800">Our 5-Step Matching Protocol</h2>
         </div>
-        <div className="space-y-8 relative before:absolute before:inset-y-0 before:left-4 sm:before:left-1/2 before:w-0.5 before:bg-slate-200">
+
+        <div ref={containerRef} className="space-y-8 relative pb-8">
+          {/* Journey SVG Paths Overlay */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            {pathD && (
+              <>
+                {/* Background trace line */}
+                <path
+                  d={pathD}
+                  fill="none"
+                  stroke="rgba(13, 148, 136, 0.08)"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                />
+                {/* Animated foreground drawing line */}
+                <motion.path
+                  ref={pathRef}
+                  d={pathD}
+                  fill="none"
+                  stroke="#0d9488"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  style={{
+                    pathLength,
+                    filter: isFinished ? 'drop-shadow(0 0 6px rgba(13, 148, 136, 0.4))' : 'none',
+                  }}
+                  className="transition-all duration-500"
+                />
+              </>
+            )}
+          </svg>
+
+          {/* Moving Glow Dot */}
+          {pathD && dotPos.x !== 0 && dotPos.y !== 0 && (
+            <div
+              style={{
+                position: 'absolute',
+                left: dotPos.x,
+                top: dotPos.y,
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none',
+                zIndex: 30,
+                willChange: 'transform',
+              }}
+              className="transform-gpu"
+            >
+              <div className="w-3.5 h-3.5 bg-white rounded-full relative flex items-center justify-center shadow-lg shadow-teal-500/50">
+                <div className="absolute w-6.5 h-6.5 bg-teal-400 rounded-full blur-sm opacity-80 -z-10 animate-pulse" />
+                <div className="absolute w-8.5 h-8.5 bg-teal-500/30 rounded-full -z-20 animate-ping [animation-duration:1.5s]" />
+              </div>
+            </div>
+          )}
           
           {/* Step 1 */}
-          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0">
-            <div className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right">
-              <span className="text-xs font-bold text-teal-600 block">Step 01</span>
-              <h3 className="text-base font-bold text-slate-800 font-display">Submit Enquiry Profile</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0 min-h-[140px] z-10">
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate={activeSteps[0] ? "visible" : "hidden"}
+              className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right"
+            >
+              <motion.span variants={itemVariants} className="text-xs font-bold text-teal-600 block">Step 01</motion.span>
+              <motion.h3 variants={itemVariants} className="text-base font-bold text-slate-800 font-display">Submit Enquiry Profile</motion.h3>
+              <motion.p variants={itemVariants} className="text-xs text-slate-500 leading-relaxed">
                 Fill out our simple form with child name, class, subject requirements, and residential sector in Lucknow.
-              </p>
-            </div>
-            {/* Center Node */}
-            <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-teal-500 border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs">
-              1
-            </div>
+              </motion.p>
+            </motion.div>
+
+            {/* Center Node 1 */}
+            <motion.div
+              ref={setNodeRef(0)}
+              initial={{ scale: 0.8, opacity: 0.3 }}
+              animate={activeSteps[0] ? { scale: [0.8, 1.25, 1], opacity: 1 } : { scale: 0.8, opacity: 0.3 }}
+              transition={{ duration: 0.4 }}
+              className={`absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs shadow-md z-20 ${
+                activeSteps[0] ? 'bg-teal-500 ring-4 ring-teal-500/20' : 'bg-slate-300'
+              }`}
+            >
+              <span>1</span>
+              {activeSteps[0] && (
+                <motion.span
+                  initial={{ scale: 0.8, opacity: 0.6 }}
+                  animate={{ scale: 2.2, opacity: 0 }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full bg-teal-500/30 -z-10"
+                />
+              )}
+            </motion.div>
             <div className="hidden sm:block w-[45%]" />
           </div>
 
           {/* Step 2 */}
-          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0">
+          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0 min-h-[140px] z-10">
             <div className="hidden sm:block w-[45%]" />
-            {/* Center Node */}
-            <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-teal-600 border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs">
-              2
-            </div>
-            <div className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <span className="text-xs font-bold text-teal-600 block">Step 02</span>
-              <h3 className="text-base font-bold text-slate-800 font-display">Academic Counselor Consultation</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            {/* Center Node 2 */}
+            <motion.div
+              ref={setNodeRef(1)}
+              initial={{ scale: 0.8, opacity: 0.3 }}
+              animate={activeSteps[1] ? { scale: [0.8, 1.25, 1], opacity: 1 } : { scale: 0.8, opacity: 0.3 }}
+              transition={{ duration: 0.4 }}
+              className={`absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs shadow-md z-20 ${
+                activeSteps[1] ? 'bg-teal-600 ring-4 ring-teal-600/20' : 'bg-slate-300'
+              }`}
+            >
+              <span>2</span>
+              {activeSteps[1] && (
+                <motion.span
+                  initial={{ scale: 0.8, opacity: 0.6 }}
+                  animate={{ scale: 2.2, opacity: 0 }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full bg-teal-600/30 -z-10"
+                />
+              )}
+            </motion.div>
+
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate={activeSteps[1] ? "visible" : "hidden"}
+              className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+            >
+              <motion.span variants={itemVariants} className="text-xs font-bold text-teal-600 block">Step 02</motion.span>
+              <motion.h3 variants={itemVariants} className="text-base font-bold text-slate-800 font-display">Academic Counselor Consultation</motion.h3>
+              <motion.p variants={itemVariants} className="text-xs text-slate-500 leading-relaxed">
                 Our counselor calls you back to gather book list specifications, current score logs, specific learning difficulties, and comfortable timing slots.
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
           </div>
 
           {/* Step 3 */}
-          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0">
-            <div className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right">
-              <span className="text-xs font-bold text-teal-600 block">Step 03</span>
-              <h3 className="text-base font-bold text-slate-800 font-display">Free 1-Hour Trial Lesson</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0 min-h-[140px] z-10">
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate={activeSteps[2] ? "visible" : "hidden"}
+              className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right"
+            >
+              <motion.span variants={itemVariants} className="text-xs font-bold text-teal-600 block">Step 03</motion.span>
+              <motion.h3 variants={itemVariants} className="text-base font-bold text-slate-800 font-display">Free 1-Hour Trial Lesson</motion.h3>
+              <motion.p variants={itemVariants} className="text-xs text-slate-500 leading-relaxed">
                 The handpicked tutor visits your home. We encourage parents to actively observe the tutor's instruction pattern and rapport building during trial class.
-              </p>
-            </div>
-            {/* Center Node */}
-            <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-amber-500 border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs">
-              3
-            </div>
+              </motion.p>
+            </motion.div>
+
+            {/* Center Node 3 */}
+            <motion.div
+              ref={setNodeRef(2)}
+              initial={{ scale: 0.8, opacity: 0.3 }}
+              animate={activeSteps[2] ? { scale: [0.8, 1.25, 1], opacity: 1 } : { scale: 0.8, opacity: 0.3 }}
+              transition={{ duration: 0.4 }}
+              className={`absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs shadow-md z-20 ${
+                activeSteps[2] ? 'bg-amber-500 ring-4 ring-amber-500/20' : 'bg-slate-300'
+              }`}
+            >
+              <span>3</span>
+              {activeSteps[2] && (
+                <motion.span
+                  initial={{ scale: 0.8, opacity: 0.6 }}
+                  animate={{ scale: 2.2, opacity: 0 }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full bg-amber-500/30 -z-10"
+                />
+              )}
+            </motion.div>
             <div className="hidden sm:block w-[45%]" />
           </div>
 
           {/* Step 4 */}
-          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0">
+          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0 min-h-[140px] z-10">
             <div className="hidden sm:block w-[45%]" />
-            {/* Center Node */}
-            <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-slate-800 border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs">
-              4
-            </div>
-            <div className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <span className="text-xs font-bold text-teal-600 block">Step 04</span>
-              <h3 className="text-base font-bold text-slate-800 font-display">Confirm & Progress Tracking</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            {/* Center Node 4 */}
+            <motion.div
+              ref={setNodeRef(3)}
+              initial={{ scale: 0.8, opacity: 0.3 }}
+              animate={activeSteps[3] ? { scale: [0.8, 1.25, 1], opacity: 1 } : { scale: 0.8, opacity: 0.3 }}
+              transition={{ duration: 0.4 }}
+              className={`absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs shadow-md z-20 ${
+                activeSteps[3] ? 'bg-slate-800 ring-4 ring-slate-800/20' : 'bg-slate-300'
+              }`}
+            >
+              <span>4</span>
+              {activeSteps[3] && (
+                <motion.span
+                  initial={{ scale: 0.8, opacity: 0.6 }}
+                  animate={{ scale: 2.2, opacity: 0 }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full bg-slate-800/30 -z-10"
+                />
+              )}
+            </motion.div>
+
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate={activeSteps[3] ? "visible" : "hidden"}
+              className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+            >
+              <motion.span variants={itemVariants} className="text-xs font-bold text-teal-600 block">Step 04</motion.span>
+              <motion.h3 variants={itemVariants} className="text-base font-bold text-slate-800 font-display">Confirm & Progress Tracking</motion.h3>
+              <motion.p variants={itemVariants} className="text-xs text-slate-500 leading-relaxed">
                 Resume regular schedules. We stay in close touch with periodic performance audits to ensure homework trackers and weekly tests are maintained.
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
           </div>
 
           {/* Step 5 */}
-          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0">
-            <div className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right">
-              <span className="text-xs font-bold text-teal-600 block">Step 05</span>
-              <h3 className="text-base font-bold text-slate-800 font-display">Start Regular Classes</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+          <div className="relative flex flex-col sm:flex-row items-start sm:justify-between gap-6 sm:gap-0 min-h-[140px] z-10">
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate={activeSteps[4] ? "visible" : "hidden"}
+              className="w-full sm:w-[45%] space-y-2 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm sm:text-right"
+            >
+              <motion.span variants={itemVariants} className="text-xs font-bold text-teal-600 block">Step 05</motion.span>
+              <motion.h3 variants={itemVariants} className="text-base font-bold text-slate-800 font-display">Start Regular Classes</motion.h3>
+              <motion.p variants={itemVariants} className="text-xs text-slate-500 leading-relaxed">
                 Your assigned tutor begins the regular academic syllabus classes at your home under coordinator monitoring.
-              </p>
-            </div>
-            {/* Center Node */}
-            <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-emerald-500 border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs">
-              5
-            </div>
+              </motion.p>
+            </motion.div>
+
+            {/* Center Node 5 */}
+            <motion.div
+              ref={setNodeRef(4)}
+              initial={{ scale: 0.8, opacity: 0.3 }}
+              animate={activeSteps[4] ? { scale: [0.8, 1.25, 1], opacity: 1 } : { scale: 0.8, opacity: 0.3 }}
+              transition={{ duration: 0.4 }}
+              className={`absolute left-4 sm:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 border-slate-50 text-white flex items-center justify-center font-bold text-xs shadow-md z-20 ${
+                activeSteps[4] ? 'bg-emerald-500 ring-4 ring-emerald-500/20' : 'bg-slate-300'
+              }`}
+            >
+              <span>5</span>
+              {activeSteps[4] && (
+                <motion.span
+                  initial={{ scale: 0.8, opacity: 0.6 }}
+                  animate={{ scale: 2.2, opacity: 0 }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+                  className="absolute inset-0 rounded-full bg-emerald-500/30 -z-10"
+                />
+              )}
+            </motion.div>
             <div className="hidden sm:block w-[45%]" />
           </div>
 
@@ -454,13 +800,17 @@ export function HowItWorksView({ onRequestTutor, onNavigate }: SubPageViewProps)
         </div>
 
         {/* Trust seal */}
-        <div className="bg-teal-50 border border-teal-100/40 p-6 rounded-2xl text-center space-y-2 max-w-2xl mx-auto pt-8">
+        <motion.div
+          animate={isFinished ? { scale: [1, 1.04, 1] } : {}}
+          transition={{ duration: 0.6, delay: 0.3, ease: 'easeInOut' }}
+          className="bg-teal-50 border border-teal-100/40 p-6 rounded-2xl text-center space-y-2 max-w-2xl mx-auto pt-8"
+        >
           <Shield className="w-8 h-8 text-teal-600 mx-auto" />
           <h4 className="text-sm font-bold text-slate-800 font-display">Complete Tutor Replacement Cover</h4>
           <p className="text-xs text-slate-500">
             If at any point during regular sessions you feel the tutor's alignment is slowing down, our support desk replaces the tutor within 48 hours without any hassle or extra fees.
           </p>
-        </div>
+        </motion.div>
 
       </div>
     </div>
