@@ -45,7 +45,10 @@ export default function RequestTutorModal({ isOpen, onClose, onSuccess, onError 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Retrieve API endpoint from environment variables only (no hardcoded fallbacks in codebase)
-  const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
+ const SCRIPT_URL =
+  import.meta.env.VITE_TUTOR_SCRIPT_URL ||
+  import.meta.env.VITE_GOOGLE_SCRIPT_URL ||
+  "";
   const {
     register,
     handleSubmit,
