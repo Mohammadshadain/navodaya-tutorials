@@ -143,7 +143,7 @@ export function MasonryGallery({
       title: 'Feedback Alignments with Parents',
       desc: 'Coordinating periodic review meetings with local families to adjust test schedules and feedback streams.',
       tag: 'Parent Interaction',
-      image: 'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=800',
+      image: 'https://images.unsplash.com/photo-1728138127500-fb73c1313f76?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       heightClass: 'h-[290px]',
       iconName: 'Users'
     },
@@ -233,7 +233,7 @@ export function MasonryGallery({
       title: 'Annual District Merits',
       desc: 'A vibrant annual celebration honoring Lucknow board toppers, teachers, and proud parents.',
       tag: 'Merit Celebration',
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800',
+      image: 'https://images.unsplash.com/photo-1677852199915-a180bdf8965e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       heightClass: 'h-[310px]',
       iconName: 'Trophy'
     },
@@ -242,7 +242,7 @@ export function MasonryGallery({
       title: 'Academic Milestone Triumphs',
       desc: 'Transforming scores from average tiers to high merit standings through persistent weekly evaluations.',
       tag: 'Academic Excellence',
-      image: 'https://images.unsplash.com/photo-1516534775068-ba3e84589d90?auto=format&fit=crop&q=80&w=800',
+      image: 'https://images.unsplash.com/photo-1607013407627-6ee814329547?q=80&w=964&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       heightClass: 'h-[295px]',
       iconName: 'GraduationCap'
     },
