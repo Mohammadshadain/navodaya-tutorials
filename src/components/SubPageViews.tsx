@@ -1404,8 +1404,7 @@ export function GalleryView({ onRequestTutor, onNavigate }: SubPageViewProps) {
           animateFrom="bottom"
           blurToFocus={true}
           scaleOnHover={true}
-          hoverScale={0.96}
-          colorShiftOnHover={true}
+          hoverScale={1.02}
           stagger={0.08}
         />
 
