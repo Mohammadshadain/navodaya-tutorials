@@ -28,7 +28,12 @@ function normalizePath(path: string): string {
 
 export function useRouter() {
   const [activePage, setActivePageState] = useState<ActivePage>(() => {
-    const path = window.location.pathname;
+    let path = window.location.pathname;
+    // Strip /index.html prefix if present to match the route config
+    if (path.startsWith('/index.html')) {
+      const clean = path.substring(11);
+      path = clean.startsWith('/') ? clean : '/' + clean;
+    }
     const matchedRoute = ROUTES.find(r => normalizePath(r.path) === normalizePath(path));
     return matchedRoute ? matchedRoute.id : 'home';
   });
@@ -45,8 +50,26 @@ export function useRouter() {
   }, []);
 
   useEffect(() => {
+    // URL Cleanup on Mount: Clean up any index.html leakage in address bar
+    let path = window.location.pathname;
+    if (path.startsWith('/index.html')) {
+      let cleanPath = path.substring(11); // '/index.html'.length is 11
+      if (!cleanPath.startsWith('/')) {
+        cleanPath = '/' + cleanPath;
+      }
+      window.history.replaceState(null, '', cleanPath);
+      const matchedRoute = ROUTES.find(r => normalizePath(r.path) === normalizePath(cleanPath));
+      setActivePageState(matchedRoute ? matchedRoute.id : 'home');
+    }
+  }, []);
+
+  useEffect(() => {
     const handlePopState = () => {
-      const path = window.location.pathname;
+      let path = window.location.pathname;
+      if (path.startsWith('/index.html')) {
+        const clean = path.substring(11);
+        path = clean.startsWith('/') ? clean : '/' + clean;
+      }
       const matchedRoute = ROUTES.find(r => normalizePath(r.path) === normalizePath(path));
       if (matchedRoute) {
         setActivePageState(matchedRoute.id);
