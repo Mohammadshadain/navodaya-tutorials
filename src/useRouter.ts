@@ -17,17 +17,26 @@ export const ROUTES: RouteConfig[] = [
   { path: '/tutor-registration', name: 'Tutor Registration', id: 'tutor-registration' }
 ];
 
+function normalizePath(path: string): string {
+  let normalized = path.trim().toLowerCase();
+  // Strip trailing slashes, but preserve the root "/"
+  if (normalized.length > 1 && normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1);
+  }
+  return normalized;
+}
+
 export function useRouter() {
   const [activePage, setActivePageState] = useState<ActivePage>(() => {
     const path = window.location.pathname;
-    const matchedRoute = ROUTES.find(r => r.path === path);
+    const matchedRoute = ROUTES.find(r => normalizePath(r.path) === normalizePath(path));
     return matchedRoute ? matchedRoute.id : 'home';
   });
 
   const navigate = useCallback((page: ActivePage) => {
     const targetRoute = ROUTES.find(r => r.id === page);
     if (targetRoute) {
-      if (window.location.pathname !== targetRoute.path) {
+      if (normalizePath(window.location.pathname) !== normalizePath(targetRoute.path)) {
         window.history.pushState(null, '', targetRoute.path);
       }
       setActivePageState(page);
@@ -38,7 +47,7 @@ export function useRouter() {
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
-      const matchedRoute = ROUTES.find(r => r.path === path);
+      const matchedRoute = ROUTES.find(r => normalizePath(r.path) === normalizePath(path));
       if (matchedRoute) {
         setActivePageState(matchedRoute.id);
         window.scrollTo({ top: 0 });
